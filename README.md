@@ -19,7 +19,7 @@ A TypeScript-based tool for converting Markdown files to PDF with syntax highlig
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ihopeit/markdown-to-pdf-converter.git
+   git clone https://github.com/davideuler/markdown-to-pdf-converter.git
    cd markdown-to-pdf-converter
 
    npm install

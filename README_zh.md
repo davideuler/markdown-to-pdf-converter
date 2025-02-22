@@ -19,7 +19,7 @@
 
 ```bash
 # 克隆倉庫
-git clone https://github.com/ihopeit/markdown-to-pdf-converter.git
+git clone https://github.com/davideuler/markdown-to-pdf-converter.git
 cd markdown-to-pdf-converter
 
 # 安裝依賴
