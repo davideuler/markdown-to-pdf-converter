@@ -1,0 +1,24 @@
+{
+  "name": "markdown-to-pdf",
+  "version": "1.0.0",
+  "description": "Convert Markdown to PDF with code highlighting",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npx ts-node index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "markdown-it": "^13.0.1",
+    "highlight.js": "^11.8.0",
+    "puppeteer": "^24.2.1"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^13.0.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.1"
+  }
+}
