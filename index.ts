@@ -8,7 +8,7 @@ class MarkdownToPdfConverter {
   private md: MarkdownIt;
 
   constructor() {
-    // 初始化 markdown-it，配置代碼高亮
+    // Initialize markdown-it with code highlighting configuration
     this.md = new MarkdownIt({
       highlight: (str: string, lang: string) => {
         if (lang && hljs.getLanguage(lang)) {
@@ -35,24 +35,80 @@ class MarkdownToPdfConverter {
         <head>
           <meta charset="UTF-8">
           <style>
+            @page {
+              size: A4;
+              margin: 2cm;
+            }
             body {
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
               line-height: 1.6;
-              padding: 2em;
-              max-width: 900px;
-              margin: 0 auto;
+              margin: 0;
+              padding: 0;
             }
+            /* Text wrapping for normal content */
+            p, li {
+              white-space: pre-wrap;
+              word-break: break-word;
+              margin: 1em 0;
+            }
+            /* Link wrapping */
+            a {
+              word-wrap: break-word;
+              word-break: break-all;
+            }
+            /* Code block styling */
             pre.hljs {
+              margin: 1em 0;
               padding: 1em;
-              border-radius: 5px;
               background-color: #f5f5f5;
-              overflow-x: auto;
+              border-radius: 5px;
+              white-space: pre;
+              overflow-x: visible;
+              font-size: 14px;
+              page-break-inside: avoid;
             }
-            code {
+            /* Ensure code is not truncated */
+            pre.hljs code {
+              display: inline-block;
+              min-width: fit-content;
               font-family: 'Courier New', Courier, monospace;
             }
+            /* Inline code styling */
+            :not(pre) > code {
+              font-family: 'Courier New', Courier, monospace;
+              padding: 0.2em 0.4em;
+              background-color: rgba(175, 184, 193, 0.2);
+              border-radius: 3px;
+              font-size: 0.9em;
+              white-space: pre-wrap;
+              word-break: break-word;
+            }
+            /* Heading styles */
             h1, h2, h3 {
               color: #2c3e50;
+              page-break-after: avoid;
+            }
+            /* Table styles */
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin: 1em 0;
+              page-break-inside: avoid;
+            }
+            table, th, td {
+              border: 1px solid #ddd;
+            }
+            th, td {
+              padding: 8px;
+              text-align: left;
+              word-wrap: break-word;
+            }
+            /* Content container */
+            .markdown-body {
+              width: 100%;
+              max-width: 100%;
+              padding: 0 1em;
+              box-sizing: border-box;
             }
             ${await fs.readFile(
               path.join(require.resolve('highlight.js'), '../../styles/github.css'),
@@ -61,7 +117,9 @@ class MarkdownToPdfConverter {
           </style>
         </head>
         <body>
-          ${htmlContent}
+          <div class="markdown-body">
+            ${htmlContent}
+          </div>
         </body>
       </html>
     `;
@@ -72,22 +130,24 @@ class MarkdownToPdfConverter {
     outputPath: string
   ): Promise<void> {
     try {
-      // 讀取 Markdown 文件
       const markdown = await fs.readFile(inputPath, 'utf-8');
-      
-      // 生成 HTML
       const html = await this.generateHtml(markdown);
 
-      // 啟動 Puppeteer
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       
-      // 設置 HTML 內容
+      // Set larger viewport to ensure complete content rendering
+      await page.setViewport({
+        width: 1200,
+        height: 1600,
+        deviceScaleFactor: 2
+      });
+
       await page.setContent(html, {
         waitUntil: 'networkidle0'
       });
 
-      // 生成 PDF
+      // Configure PDF generation options
       await page.pdf({
         path: outputPath,
         format: 'A4',
@@ -97,19 +157,22 @@ class MarkdownToPdfConverter {
           bottom: '2cm',
           left: '2cm'
         },
-        printBackground: true
+        printBackground: true,
+        scale: 0.8, // Scale down content to ensure code blocks fit
+        displayHeaderFooter: false,
+        preferCSSPageSize: true
       });
 
       await browser.close();
-      console.log(`PDF 已成功生成：${outputPath}`);
+      console.log(`PDF generated successfully: ${outputPath}`);
     } catch (error) {
-      console.error('轉換過程中發生錯誤:', error);
+      console.error('Error during conversion:', error);
       throw error;
     }
   }
 }
 
-// 使用示例
+// Usage example
 async function main() {
   const converter = new MarkdownToPdfConverter();
   const inputFile = 'input.md';
@@ -118,7 +181,7 @@ async function main() {
   try {
     await converter.convertToPdf(inputFile, outputFile);
   } catch (error) {
-    console.error('程序執行失敗:', error);
+    console.error('Program execution failed:', error);
     process.exit(1);
   }
 }
