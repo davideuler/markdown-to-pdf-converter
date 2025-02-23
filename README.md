@@ -2,45 +2,91 @@
 
 [中文文档](README_zh.md)
 
-A TypeScript-based tool for converting Markdown files to PDF with syntax highlighting and proper formatting. This tool is particularly good at handling long code blocks and maintaining proper formatting in the generated PDF.
+A TypeScript-based tool for converting Markdown files to PDF with syntax highlighting and proper formatting. This tool uses Puppeteer to generate high-quality PDFs with proper code formatting and text wrapping.
 
 ## Features
 
 - Converts Markdown files to beautifully formatted PDFs
-- Supports code syntax highlighting with multiple programming languages
-- Handles long content with proper line wrapping
-- Maintains code block formatting with proper display
-- Supports tables and other Markdown elements
-- Properly handles page breaks
-- Responsive design for different content types
-- High-quality PDF output with configurable options
+- Syntax highlighting for multiple programming languages
+- Smart line wrapping for long code blocks and URLs
+- Proper handling of Unicode characters
+- Responsive tables and lists
+- Automatic page breaks with proper content flow
+- High-resolution output (2x scale factor)
+- Command-line interface
 
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/davideuler/markdown-to-pdf-converter.git
-   cd markdown-to-pdf-converter
+```bash
+git clone https://github.com/yourusername/markdown-to-pdf.git
+cd markdown-to-pdf
+```
 
-   npm install
-   ```
-
+2. Install dependencies:
+```bash
+npm install
+```
 
 ## Usage
 
-### Basic Usage
-
-1. Place your Markdown file in the project directory (default: `input.md`)
-2. Run the converter:
-3. Find the generated PDF (default: `output.pdf`)
-
-### API Usage
-
-``` typescript
-import MarkdownToPdfConverter from './index';
-const converter = new MarkdownToPdfConverter();
-await converter.convertToPdf('input.md', 'output.pdf');
+Convert a Markdown file to PDF:
+```bash
+npm run convert <input-markdown-file>
 ```
+
+Example:
+```bash
+npm run convert README.md
+```
+
+This will generate a PDF file with the same name as your input file (e.g., `README.pdf`) in the same directory.
+
+## Supported Features
+
+### Code Blocks
+- Syntax highlighting for multiple programming languages
+- Proper line wrapping for long code lines
+- Background color and padding
+- Monospace font (Courier New)
+- Page break prevention within code blocks
+
+### Text and Links
+- Smart wrapping for long URLs and text
+- Proper handling of inline code
+- Clean typography with system fonts
+- Proper line height and margins
+
+### Document Structure
+- Hierarchical heading styles
+- Proper page breaks between sections
+- Responsive table formatting
+- Clean list formatting with proper indentation
+
+### PDF Output
+- A4 format with 2cm margins
+- High-resolution rendering (2x scale)
+- Background colors and styling
+- Content scaling for optimal display
+
+## Technical Details
+
+The converter uses:
+- `markdown-it` for Markdown parsing
+- `highlight.js` for code syntax highlighting
+- `puppeteer` for PDF generation
+- Custom CSS for styling and layout
+
+## Development
+
+Build the project:
+```bash
+npm run build
+```
+
+## License
+
+Apache 2.0
 
 ## Features in Detail
 
@@ -58,9 +104,7 @@ await converter.convertToPdf('input.md', 'output.pdf');
 
 ### PDF Output
 - A4 format with configurable margins
-- High-resolution output
-- Configurable page breaks
-- Clean and professional layout
+- High-quality PDF output with configurable options
 
 ## Configuration
 

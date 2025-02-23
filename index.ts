@@ -174,14 +174,33 @@ class MarkdownToPdfConverter {
 
 // Usage example
 async function main() {
-  const converter = new MarkdownToPdfConverter();
-  const inputFile = 'input.md';
-  const outputFile = 'output.pdf';
+  const inputFile = process.argv[2];
+  
+  if (!inputFile) {
+    console.error('Usage: npm run convert <input-markdown-file>');
+    console.error('Example: npm run convert README.md');
+    process.exit(1);
+  }
 
   try {
+    // 检查输入文件是否存在
+    await fs.access(inputFile);
+    
+    // 生成输出文件名
+    const inputPath = path.parse(inputFile);
+    const outputFile = path.join(
+      inputPath.dir,
+      `${inputPath.name}.pdf`
+    );
+
+    const converter = new MarkdownToPdfConverter();
     await converter.convertToPdf(inputFile, outputFile);
-  } catch (error) {
-    console.error('Program execution failed:', error);
+  } catch (error: any) {
+    if (error?.code === 'ENOENT') {
+      console.error(`Error: Input file "${inputFile}" does not exist.`);
+    } else {
+      console.error('Program execution failed:', error);
+    }
     process.exit(1);
   }
 }

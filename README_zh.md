@@ -1,111 +1,92 @@
-# Markdown 轉 PDF 工具
+# Markdown 转 PDF 工具
 
 [English](README.md)
 
-一個基於 TypeScript 的工具，用於將 Markdown 文件轉換為具有語法高亮和適當格式的 PDF。該工具特別善於處理長代碼塊並在生成的 PDF 中保持正確的格式。
+一个基于 TypeScript 的工具，用于将 Markdown 文件转换为具有语法高亮和适当格式的 PDF。该工具使用 Puppeteer 生成高质量的 PDF，支持代码格式化和文本自动换行。
 
 ## 特性
 
-- 將 Markdown 文件轉換為格式精美的 PDF
-- 支持多種程序語言的代碼語法高亮
-- 處理長內容時自動換行
-- 保持代碼塊格式，正確顯示
-- 支持表格等 Markdown 元素
-- 正確處理分頁
-- 針對不同內容類型的響應式設計
-- 可配置選項的高質量 PDF 輸出
+- 将 Markdown 文件转换为格式精美的 PDF
+- 多种编程语言的语法高亮
+- 长代码块和 URL 的智能换行
+- 完善的 Unicode 字符支持
+- 响应式表格和列表
+- 自动分页并保持内容流畅
+- 高分辨率输出（2倍缩放）
+- 命令行界面
 
-## 安裝
+## 安装
 
+1. 克隆仓库：
 ```bash
-# 克隆倉庫
-git clone https://github.com/davideuler/markdown-to-pdf-converter.git
-cd markdown-to-pdf-converter
+git clone https://github.com/yourusername/markdown-to-pdf.git
+cd markdown-to-pdf
+```
 
-# 安裝依賴
+2. 安装依赖：
+```bash
 npm install
 ```
 
 ## 使用方法
 
-### 基本使用
-
-1. 將 Markdown 文件放在項目目錄中（默認：`input.md`）
-2. 運行轉換器：
+转换 Markdown 文件为 PDF：
 ```bash
-npm run start
-```
-3. 查看生成的 PDF（默認：`output.pdf`）
-
-### API 使用
-
-```typescript
-import MarkdownToPdfConverter from './index';
-
-const converter = new MarkdownToPdfConverter();
-await converter.convertToPdf('input.md', 'output.pdf');
+npm run convert <输入的Markdown文件>
 ```
 
-## 功能詳情
-
-### 代碼塊處理
-- 支持多種程序語言的語法高亮
-- 在 PDF 中保持正確的格式
-- 長代碼行的正確顯示
-- 使用等寬字體提高代碼可讀性
-
-### 文本和內容
-- 長文本自動換行
-- 正確處理鏈接和 URL
-- 清晰可讀的排版
-- 格式正確的響應式表格
-
-### PDF 輸出
-- A4 格式，可配置頁邊距
-- 高分辨率輸出
-- 可配置的分頁處理
-- 清晰專業的佈局
-
-## 配置
-
-轉換器通過 CSS 支持各種樣式選項，通過 Puppeteer 支持 PDF 生成選項。主要配置包括：
-
-```typescript
-// PDF 生成選項
-{
-  format: 'A4',
-  margin: {
-    top: '2cm',
-    right: '2cm',
-    bottom: '2cm',
-    left: '2cm'
-  },
-  printBackground: true,
-  scale: 0.8,
-  displayHeaderFooter: false,
-  preferCSSPageSize: true
-}
-```
-
-## 依賴
-
-- `markdown-it`：用於解析 Markdown
-- `highlight.js`：用於代碼語法高亮
-- `puppeteer`：用於生成 PDF
-
-## 開發
-
+示例：
 ```bash
-# 構建項目
+npm run convert README.md
+```
+
+这将在相同目录下生成一个与输入文件同名的 PDF 文件（例如：`README.pdf`）。
+
+## 支持的功能
+
+### 代码块
+- 多种编程语言的语法高亮
+- 长代码行的自动换行
+- 背景色和内边距
+- 等宽字体（Courier New）
+- 防止代码块在页面中间断开
+
+### 文本和链接
+- 长 URL 和文本的智能换行
+- 行内代码的正确处理
+- 使用系统字体的清晰排版
+- 适当的行高和边距
+
+### 文档结构
+- 层级化的标题样式
+- 章节之间的适当分页
+- 响应式表格格式
+- 带有正确缩进的列表格式
+
+### PDF 输出
+- A4 格式，2厘米页边距
+- 高分辨率渲染（2倍缩放）
+- 背景色和样式
+- 最佳显示的内容缩放
+
+## 技术细节
+
+转换器使用：
+- `markdown-it` 用于解析 Markdown
+- `highlight.js` 用于代码语法高亮
+- `puppeteer` 用于生成 PDF
+- 自定义 CSS 用于样式和布局
+
+## 开发
+
+构建项目：
+```bash
 npm run build
-
-# 使用 TypeScript 運行
-npm run start
 ```
 
-## 許可證
+## 许可证
 
-ISC
+Apache 2.0
 
 ## 貢獻
 
