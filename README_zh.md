@@ -14,6 +14,28 @@
 - 自动分页并保持内容流畅
 - 高分辨率输出（2倍缩放）
 - 命令行界面
+- 优化的中文字体支持（自动适配系统）
+
+## 系统要求
+
+### Mac 用户
+无需额外配置，默认使用系统自带的中文字体：
+- PingFang SC（苹方）
+- Hiragino Sans GB（冬青黑体）
+- Microsoft YaHei（微软雅黑，如果安装）
+
+### Linux 用户
+需要安装以下字体之一：
+```bash
+# Ubuntu/Debian
+sudo apt-get install fonts-noto-cjk fonts-wqy-microhei
+
+# Fedora
+sudo dnf install google-noto-sans-cjk-ttc-fonts wqy-microhei-fonts
+
+# Arch Linux
+sudo pacman -S noto-fonts-cjk wqy-microhei
+```
 
 ## 安装
 
@@ -56,9 +78,10 @@ npm run convert README.md
 - 行内代码的正确处理
 - 使用系统字体的清晰排版
 - 适当的行高和边距
+- 优化的中文标点符号显示
 
 ### 文档结构
-- 层级化的标题样式
+- 层级化的标题样式（优化中文显示）
 - 章节之间的适当分页
 - 响应式表格格式
 - 带有正确缩进的列表格式
@@ -68,6 +91,7 @@ npm run convert README.md
 - 高分辨率渲染（2倍缩放）
 - 背景色和样式
 - 最佳显示的内容缩放
+- 优化的字体渲染
 
 ## 技术细节
 
@@ -76,6 +100,7 @@ npm run convert README.md
 - `highlight.js` 用于代码语法高亮
 - `puppeteer` 用于生成 PDF
 - 自定义 CSS 用于样式和布局
+- 系统原生字体用于最佳显示效果
 
 ## 开发
 
@@ -88,6 +113,6 @@ npm run build
 
 Apache 2.0
 
-## 貢獻
+## 贡献
 
-歡迎貢獻！請隨時提交 Pull Request。
+欢迎贡献！请随时提交 Pull Request。

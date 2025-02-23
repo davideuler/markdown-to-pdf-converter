@@ -3,12 +3,14 @@ import hljs from 'highlight.js';
 import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
 import path from 'path';
+import os from 'os';
 
 class MarkdownToPdfConverter {
   private md: MarkdownIt;
+  private platform: string;
 
   constructor() {
-    // Initialize markdown-it with code highlighting configuration
+    this.platform = os.platform();
     this.md = new MarkdownIt({
       highlight: (str: string, lang: string) => {
         if (lang && hljs.getLanguage(lang)) {
@@ -27,8 +29,22 @@ class MarkdownToPdfConverter {
     });
   }
 
+  private getFontFamily(): string {
+    // 根据不同操作系统返回合适的字体
+    switch (this.platform) {
+      case 'darwin': // macOS
+        return `-apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei"`;
+      case 'linux': // may also support LXGW-Neo-XiHei: not tested on Linux yet
+        return `"Noto Sans CJK SC", "WenQuanYi Micro Hei", "Microsoft YaHei", "LXGW-Neo-XiHei"`;
+      default:
+        return `"Microsoft YaHei", "PingFang SC", sans-serif`;
+    }
+  }
+
   private async generateHtml(markdown: string): Promise<string> {
     const htmlContent = this.md.render(markdown);
+    const fontFamily = this.getFontFamily();
+    
     return `
       <!DOCTYPE html>
       <html>
@@ -40,7 +56,7 @@ class MarkdownToPdfConverter {
               margin: 2cm;
             }
             body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+              font-family: ${fontFamily}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
               line-height: 1.6;
               margin: 0;
               padding: 0;
@@ -87,6 +103,8 @@ class MarkdownToPdfConverter {
             h1, h2, h3 {
               color: #2c3e50;
               page-break-after: avoid;
+              font-family: ${fontFamily}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+              font-weight: 600;
             }
             /* Table styles */
             table {
@@ -133,7 +151,9 @@ class MarkdownToPdfConverter {
       const markdown = await fs.readFile(inputPath, 'utf-8');
       const html = await this.generateHtml(markdown);
 
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--font-render-hinting=none']
+      });
       const page = await browser.newPage();
       
       // Set larger viewport to ensure complete content rendering
